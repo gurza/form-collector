@@ -47,8 +47,6 @@ def logins_list():
 def form_ctrl():
     form = LoginForm()
     if form.validate_on_submit():
-        print form.login.data
-        print form.password.data
         login = Login(
                     login = form.login.data,
                     password = form.password.data
