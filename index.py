@@ -3,6 +3,7 @@
 from flask import Flask, Response, render_template, redirect
 from flask.ext.sqlalchemy import SQLAlchemy
 import simplejson
+import datetime
 import config
 from forms import LoginForm
 
@@ -17,6 +18,9 @@ class Login(db.Model):
     login = db.Column(db.String(64), index=True, unique=False)
     password = db.Column(db.String(64), index=False, unique=False)
 
+    created_at = db.Column(db.DateTime, default=datetime.datetime.utcnow())
+    updated_at = db.Column(db.DateTime, default=datetime.datetime.utcnow(), onupdate=datetime.datetime.utcnow())
+
     def __repr__(self):
         return '<Login %r:%r>' % (self.login, self.password)
 
@@ -28,13 +32,14 @@ def ping():
 
 @app.route('/api/v1/logins', methods = ['GET'])
 def logins_list():
-    logins = Login.query.all()
+    logins = Login.query.order_by(db.desc(Login.created_at)).all()
 
     res = []
     for l in logins:
         res.append({
             'login': l.login,
             'password': l.password,
+            'timestamp': l.created_at.strftime("%Y-%m-%d %H:%M:%S"),
         })
 
     return Response(
