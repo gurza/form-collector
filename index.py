@@ -1,11 +1,13 @@
 #!/usr/bin/env python
 #coding: utf-8
 from flask import Flask, Response, render_template, redirect
+from flask.ext.wtf import Form
+from wtforms import StringField
+from wtforms.validators import DataRequired
 from flask.ext.sqlalchemy import SQLAlchemy
 import simplejson
 import datetime
 import config
-from forms import LoginForm
 
 
 app = Flask('index')
@@ -13,7 +15,12 @@ app.config.from_object(config)
 db = SQLAlchemy(app)
 
 
-class Login(db.Model):
+class LoginForm(Form):
+    login = StringField('login', validators=[DataRequired()])
+    password = StringField('password', validators=[DataRequired()])
+
+
+class LoginModel(db.Model):
     id = db.Column(db.Integer, primary_key=True)
     login = db.Column(db.String(64), index=True, unique=False)
     password = db.Column(db.String(64), index=False, unique=False)
@@ -32,7 +39,7 @@ def ping():
 
 @app.route('/api/v1/logins', methods = ['GET'])
 def logins_list():
-    logins = Login.query.order_by(db.desc(Login.created_at)).all()
+    logins = LoginModel.query.order_by(db.desc(LoginModel.created_at)).all()
 
     res = []
     for l in logins:
@@ -52,7 +59,7 @@ def logins_list():
 def form_ctrl():
     form = LoginForm()
     if form.validate_on_submit():
-        login = Login(
+        login = LoginModel(
                     login = form.login.data,
                     password = form.password.data
         )
