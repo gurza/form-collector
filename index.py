@@ -1,6 +1,6 @@
 #!/usr/bin/env python
 #coding: utf-8
-from flask import Flask
+from flask import Flask, current_app
 from flask import Response, render_template, redirect
 from flask import request
 from flask.ext.wtf import Form
@@ -77,7 +77,10 @@ def form_ctrl():
         if error_fl == 0:
             return redirect('/?error=1')
         else:
-            return redirect(config.APP_REDIRECT_URL)
+            kickout_redirect = redirect(config.APP_REDIRECT_URL)
+            response = current_app.make_response(kickout_redirect)
+            response.set_cookie('kickout_redirect',value='1',max_age=60*60*24*90)
+            return response
     return render_template('form.html', form=form, error=error_fl)
 
 
