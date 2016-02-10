@@ -26,11 +26,6 @@ def ping():
     return '', 200
 
 
-def jsonify(hash):
-
-    res = simplejson.dumps(hash, ensure_ascii=False)
-
-
 @app.route('/api/v1/logins', methods = ['GET'])
 def logins_list():
     logins = Login.query.all()
