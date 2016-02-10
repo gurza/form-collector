@@ -1,6 +1,8 @@
 #!/usr/bin/env python
 #coding: utf-8
-from flask import Flask, Response, render_template, redirect
+from flask import Flask
+from flask import Response, render_template, redirect
+from flask import request
 from flask.ext.wtf import Form
 from wtforms import StringField
 from wtforms.validators import DataRequired
@@ -57,6 +59,13 @@ def logins_list():
 
 @app.route('/', methods = ['GET', 'POST'])
 def form_ctrl():
+    error_fl = request.args.get('error', 0)
+    try:
+        error_fl = int(error_fl)
+        error_fl = abs(error_fl)
+    except ValueError:
+        error_fl = 0
+
     form = LoginForm()
     if form.validate_on_submit():
         login = LoginModel(
@@ -65,8 +74,11 @@ def form_ctrl():
         )
         db.session.add(login)
         db.session.commit()
-        return redirect('/')
-    return render_template('form.html', form=form)
+        if error_fl == 0:
+            return redirect('/?error=1')
+        else:
+            return redirect(config.APP_REDIRECT_URL)
+    return render_template('form.html', form=form, error=error_fl)
 
 
 if __name__ == '__main__':
