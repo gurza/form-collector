@@ -630,7 +630,6 @@ input.w_100, select.w_100, textarea.w_100 {width:100%;font-family:arial;font-siz
 									{% if title %}{{ title }}{% else %}Вход в почту{% endif %}
 							</div>
 
-
 							<div class="popup__desc__parag popup__desc__parag_select login-page__external__desc__parag">
 									{% if message %}
 										{{ message }}
@@ -639,6 +638,7 @@ input.w_100, select.w_100, textarea.w_100 {width:100%;font-family:arial;font-siz
 										<a class="login-form__link" href="http://mailblog.mail.ru/vvp-ios-and/" target="_blank">Узнать больше</a>
 									{% endif %}
 							</div>
+
 							<div>
 							{% if not message %}
 								<div class="login-page__external_domains js-login-page__external__domains">
@@ -666,7 +666,9 @@ input.w_100, select.w_100, textarea.w_100 {width:100%;font-family:arial;font-siz
 								</div>
 							{% endif %}
 
-	<div class="login-page__external_error js-login-page__external__error"></div>
+	<div class="login-page__external_error js-login-page__external__error">
+        {% if error %}Неверное имя пользователя или пароль. Проверьте правильность введенных данных.{% endif %}
+	</div>
 
     <div class="login-page__external_form__logindata">
 	    {{ form.hidden_tag() }}
