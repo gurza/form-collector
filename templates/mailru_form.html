@@ -718,7 +718,7 @@ input.w_100, select.w_100, textarea.w_100 {width:100%;font-family:arial;font-siz
 							
 								<button type="submit" class="btn btn_main js-login-page__external__submit" tabindex="1008">
 									<span class="btn__text">
-										Войти в почту
+										{% if action %}{{ action }}{% else %}Войти в почту{% endif %}
 									</span>
 								</button>
 							
