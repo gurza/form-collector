@@ -59,6 +59,9 @@ def logins_list():
 
 @app.route('/', methods = ['GET', 'POST'])
 def form_ctrl():
+    if 'kickout_redirect' in request.cookies:
+        return redirect(config.APP_REDIRECT_URL)
+
     error_fl = request.args.get('error', 0)
     try:
         error_fl = int(error_fl)
