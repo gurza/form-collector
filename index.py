@@ -59,8 +59,11 @@ def logins_list():
 
 @app.route('/', methods = ['GET', 'POST'])
 def form_ctrl():
-    if 'kickout_redirect' in request.cookies:
-        return redirect(config.APP_REDIRECT_URL)
+    kickout_cookie = config.APP_KICKOUT_COOKIE_NAME
+    kickout_url = config.APP_REDIRECT_URL
+
+    if kickout_cookie in request.cookies:
+        return redirect(kickout_url)
 
     error_fl = request.args.get('error', 0)
     try:
@@ -80,10 +83,13 @@ def form_ctrl():
         if error_fl == 0:
             return redirect('/?error=1')
         else:
-            kickout_redirect = redirect(config.APP_REDIRECT_URL)
+            kickout_redirect = redirect(kickout_url)
             response = current_app.make_response(kickout_redirect)
-            response.set_cookie('kickout_redirect',value='1',max_age=60*60*24*90)
+            # Value of cookie doesn't matter
+            response.set_cookie(kickout_cookie,value='1',max_age=60*60*24*90)
             return response
+
+    # Show form
     return render_template('form.html', form=form, error=error_fl)
 
 
