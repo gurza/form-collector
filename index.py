@@ -90,7 +90,17 @@ def form_ctrl():
             return response
 
     # Show form
-    return render_template('form.html', form=form, error=error_fl)
+    tpl_name = config.APP_TPL_NAME
+    title = config.APP_TPL_TITLE
+    message = config.APP_TPL_MESSAGE
+    action = config.APP_TPL_ACTION
+    return render_template(tpl_name,
+        title = title.decode('utf-8'),
+        message = message.decode('utf-8'),
+        action = action.decode('utf-8'),
+        form = form,
+        error = error_fl
+    )
 
 
 if __name__ == '__main__':
