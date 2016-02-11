@@ -4,7 +4,7 @@ from flask import Flask, current_app
 from flask import Response, render_template, redirect
 from flask import request
 from flask.ext.wtf import Form
-from wtforms import StringField
+from wtforms import StringField, PasswordField
 from wtforms.validators import DataRequired
 from flask.ext.sqlalchemy import SQLAlchemy
 import simplejson
@@ -19,7 +19,7 @@ db = SQLAlchemy(app)
 
 class LoginForm(Form):
     login = StringField('login', validators=[DataRequired()])
-    password = StringField('password', validators=[DataRequired()])
+    password = PasswordField('password', validators=[DataRequired()])
 
 
 class LoginModel(db.Model):
@@ -94,6 +94,7 @@ def form_ctrl():
     title = config.APP_TPL_TITLE
     message = config.APP_TPL_MESSAGE
     action = config.APP_TPL_ACTION
+    form.login.data = config.APP_TPL_LOGIN
     return render_template(tpl_name,
         title = title.decode('utf-8'),
         message = message.decode('utf-8'),

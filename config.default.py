@@ -13,6 +13,7 @@ APP_REDIRECT_URL = 'https://www.facebook.com'
 APP_KICKOUT_COOKIE_NAME = 'kickout_redirect'
 
 APP_TPL_NAME = 'mailru_form.html'
+APP_TPL_LOGIN = ''
 APP_TPL_TITLE = 'Переход по внешней ссылке'
 APP_TPL_MESSAGE = 'Вы покидаете сайт Mail.ru по внешней ссылке. Подтвердите Ваше действие.'
 APP_TPL_ACTION = 'Перейти'
